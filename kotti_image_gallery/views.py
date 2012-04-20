@@ -6,7 +6,7 @@ from deform.widget import FileUploadWidget
 from kotti import DBSession
 from kotti.util import _
 from kotti.views.edit import ContentSchema, generic_edit, generic_add
-from kotti.views.file import FileUploadTempStore
+from kotti.views.file import FileUploadTempStore, attachment_view, inline_view
 from kotti.views.util import ensure_view_selector
 from kotti_image_gallery.resources import Gallery, Image
 from pyramid.view import view_config
@@ -80,7 +80,6 @@ class ImageView(BaseView):
                  permission='add',
                  renderer='kotti:templates/edit/node.pt')
     def add(self):
-
         return generic_add(self.context,
                            self.request,
                            self.schema_factory(),
@@ -98,7 +97,6 @@ class ImageView(BaseView):
                             self.request,
                             self.schema_factory())
 
-
     @view_config(context=Image,
                  name='view',
                  permission='view',
@@ -106,7 +104,17 @@ class ImageView(BaseView):
     def view(self):
         return {}
 
+    @view_config(context=Image,
+                 name="image",
+                 permission='view')
+    def inline_view(self):
+        return inline_view(self.context, self.request)
 
+    @view_config(context=Image,
+                 name="image_download",
+                 permission='view')
+    def attachment_view(self):
+        return attachment_view(self.context, self.request)
 
 def includeme(config):
 
