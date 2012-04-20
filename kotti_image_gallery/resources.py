@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from kotti import DBSession
 from kotti.resources import Content, File
 from kotti.util import _
 from sqlalchemy import Column, ForeignKey, Integer, LargeBinary, String, Unicode
@@ -27,11 +28,14 @@ class Image(Content):
                                     add_view=u'add_image',
                                     addable_to=[u'Gallery'], )
 
-    def __init__(self, data=None, filename=None, mimetype=None, size=None, **kwargs):
+    def __init__(self, file=None, **kwargs):
 
-        super(File, self).__init__(**kwargs)
+        super(Image, self).__init__(**kwargs)
 
-        self.data = data
-        self.filename = filename
-        self.mimetype = mimetype
-        self.size = size
+        if file is not None:
+            self.data = file["fp"].read()
+            self.filename = file["filename"]
+            self.mimetype = file["mimetype"]
+            self.size = len(self.data)
+
+            DBSession().add(self)
