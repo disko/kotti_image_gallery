@@ -8,8 +8,27 @@
       ${context.description}
     </p>
     <div class="body">
-        a gallery
+      <div id="carousel" class="carousel slide">
+        <!-- Carousel items -->
+        <div class="carousel-inner">
+          <div class="item" tal:repeat="image images">
+              <img src="${request.resource_url(image)}image" />
+              <div class="carousel-caption">
+                  <h4>${image.title}</h4>
+                  <p>${image.description}</p>
+                </div>
+          </div>
+        </div>
+        <!-- Carousel nav -->
+        <a class="carousel-control left" href="#carousel" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control right" href="#carousel" data-slide="next">&rsaquo;</a>
+      </div>
     </div>
+    <script>
+      $(function () {
+        $('.carousel .item').eq(0).addClass('active');
+        $('.carousel').carousel();
+      });
+    </script>
   </article>
-
 </html>
