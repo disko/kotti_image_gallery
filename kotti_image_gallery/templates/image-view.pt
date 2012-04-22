@@ -8,7 +8,7 @@
       ${context.description}
     </p>
     <div class="body">
-        an image
+        <img src="${request.resource_url(context)}image" />
     </div>
   </article>
 

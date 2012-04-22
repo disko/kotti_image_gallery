@@ -10,9 +10,11 @@
     <div class="body">
       <div id="carousel" class="carousel slide">
         <!-- Carousel items -->
-        <div class="carousel-inner">
+        <div class="carousel-inner" style="background-color: black">
           <div class="item" tal:repeat="image images">
-              <img src="${request.resource_url(image)}image" />
+              <div class="carousel-image" style="text-align:center">
+                <img src="${request.resource_url(image)}image" />
+              </div>
               <div class="carousel-caption">
                   <h4>${image.title}</h4>
                   <p>${image.description}</p>
