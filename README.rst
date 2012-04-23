@@ -49,7 +49,7 @@ Just clone its `Github repository`_ and submit your contributions as pull reques
 Note that all development is done on the ``develop`` branch and ``master`` is reserved for "production-ready state".
 Therefore make sure to always base your work on the current state of the ``develop`` branch.
 
-This follows the highly recommended `A successful Git branching model`_ pattern, which is backed the the excellent `gitflow`_ git extension.
+This follows the highly recommended `A successful Git branching model`_ pattern, which is implemented by the excellent `gitflow`_ git extension.
 
 
 .. _Bootstrap Carousel: http://twitter.github.com/bootstrap/javascript.html#carousel
