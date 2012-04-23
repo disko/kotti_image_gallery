@@ -60,7 +60,7 @@ class GalleryView(BaseView):
     def view(self):
 
         session = DBSession()
-        query = session.query(Image).filter(Image.parent_id==self.context.id)
+        query = session.query(Image).filter(Image.parent_id==self.context.id).order_by(Image.position)
         images = query.all()
 
         return {"images": images}
