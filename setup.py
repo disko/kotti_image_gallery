@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.1.1'
+version = '0.2'
 
 here = os.path.abspath(os.path.dirname(__file__))
 try:
@@ -30,4 +30,4 @@ setup(name='kotti_image_gallery',
       include_package_data=True,
       zip_safe=False,
       install_requires=["Kotti>=0.6.0b1",
-                        "repoze.bitblt"], )
+                        "plone.scale"], )

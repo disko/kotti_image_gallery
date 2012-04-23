@@ -21,14 +21,26 @@ The line in your ``[app:main]`` section could then look like this::
 With this, you'll be able to add gallery and image items in your site.
 
 
-Image scales
-============
+Image URLs
+==========
 
-``kotti_image_gallery`` doesn't provide image scaling itself (yet?).
-To have a visually appealing gallery view with the default `Bootstrap Carousel`_ based template, it is required to have the same height for all images in the gallery (at least within the gallery view itself).
-To not rely on the different browsers' image scaling capabilities (and save bandwith by serving scaled images instead of the maybe huge originals), the included ``development.ini`` sets up a WSGI pipeline with a `repoze.bitblt`_ filter.
-To adjust the height of the carousel you just need to set the ``height`` attribute of the ``img`` tag in ``gallery-view.pt`` to the desired value.
-This might become configurable by the content manager in future releases.
+``kotti_image_gallery`` provides on-the-fly image scaling by utilizing `plone.scale`_ (thanks to Tom Lazar for the hint).
+
+Images (including arbitrary scales) can be referenced by this URL schema: ``/path/to/image_content_object/image[[/<image_scale>]/download]`` where ``<image_scale>`` can be:
+
+ - a predefined image scale (see below)
+ - a string of the form ``<max_width>x<max_height>`` or
+ - a URL path segment of the form ``<max_width>/<max_height>``
+
+If the last URL path segment is ``download``, the image will be served with ``Content-disposition: attachment`` otherwise it will be served with ``Content-disposition: inline``.
+
+Predefined image scale sizes
+----------------------------
+
+You may define image scale sizes in your ``.ini`` file by setting values for ``kotti_image_gallery.scale_<scale_name>`` to values of the form ``<max_width>x<max_height>`` (e.g. ``kotti_image_gallery.scale_thumb = 160x120`` with the resulting scale name ``thumb``).
+
+``thumb`` (160x120) and ``carousel`` (560x420) are always defined (because they are used in the default templates), but their values can be overwritten by setting ``kotti_image_gallery.scale_thumb`` and/or ``kotti_image_gallery.scale_carousel`` to different values in your .ini file.
+
 
 
 Work in progress
@@ -54,7 +66,7 @@ This follows the highly recommended `A successful Git branching model`_ pattern,
 
 .. _Bootstrap Carousel: http://twitter.github.com/bootstrap/javascript.html#carousel
 .. _Find out more about Kotti: http://pypi.python.org/pypi/Kotti
-.. _repoze.bitblt: http://pypi.python.org/pypi/repoze.bitblt
+.. _`plone.scale`: http://pypi.python.org/pypi/plone.scale/1.2.2
 .. _Github repository: https://github.com/disko/kotti_image_gallery
 .. _gitflow: https://github.com/nvie/gitflow
 .. _A successful Git branching model: http://nvie.com/posts/a-successful-git-branching-model/

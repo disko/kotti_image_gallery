@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import colander
 from kotti import DBSession
 from kotti.resources import Content, File
 from kotti.util import _
-from sqlalchemy import Column, ForeignKey, Integer, LargeBinary, String, Unicode
+from sqlalchemy import Column, ForeignKey, Integer
 
 class Gallery(Content):
 
@@ -15,13 +16,9 @@ class Gallery(Content):
                                        addable_to=[u'Document'], )
 
 
-class Image(Content):
+class Image(File):
 
-    id = Column(Integer(), ForeignKey('contents.id'), primary_key=True)
-    data = Column(LargeBinary())
-    filename = Column(Unicode(100))
-    mimetype = Column(String(100))
-    size = Column(Integer())
+    id = Column(Integer(), ForeignKey('files.id'), primary_key=True)
 
     type_info = File.type_info.copy(name=u'Image',
                                     title=_(u'Image'),
@@ -32,7 +29,8 @@ class Image(Content):
 
         super(Image, self).__init__(**kwargs)
 
-        if file is not None:
+        if (file is not None) and (file is not colander.null):
+
             self.data = file["fp"].read()
             self.filename = file["filename"]
             self.mimetype = file["mimetype"]
