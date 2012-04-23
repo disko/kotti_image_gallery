@@ -17,6 +17,7 @@ def kotti_configure(settings):
         if k.startswith("kotti_image_gallery.scale_"):
             try:
                 x, y = [int(v) for v in settings[k].split("x")]
-                image_scales[k[26:]] = [x, y]
             except ValueError:
                 log.error("Invalid value for %s: '%s' (image scales must be <width>x<height>. e.g. 200x100")
+            else:
+                image_scales[k[26:]] = [x, y]

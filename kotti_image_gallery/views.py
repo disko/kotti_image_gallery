@@ -1,20 +1,24 @@
 # -*- coding: utf-8 -*-
 
+import PIL
 from colander import null, SchemaNode
 from deform import FileData
 from deform.widget import FileUploadWidget
 from kotti import DBSession
 from kotti.util import _
 from kotti.views.edit import ContentSchema, generic_edit, generic_add
-from kotti.views.file import FileUploadTempStore, attachment_view, inline_view
+from kotti.views.file import FileUploadTempStore
 from kotti.views.util import ensure_view_selector
+from kotti_image_gallery import image_scales
 from kotti_image_gallery.resources import Gallery, Image
+from plone.scale.scale import scaleImage
+from pyramid.response import Response
 from pyramid.view import view_config
 
+PIL.ImageFile.MAXBLOCK = 33554432
 
 class GallerySchema(ContentSchema):
     pass
-
 
 
 class BaseView(object):
@@ -107,14 +111,50 @@ class ImageView(BaseView):
     @view_config(context=Image,
                  name="image",
                  permission='view')
-    def inline_view(self):
-        return inline_view(self.context, self.request)
+    def image(self):
+        """return the image in a specific scale, either inline (default) or as attachment"""
 
-    @view_config(context=Image,
-                 name="image_download",
-                 permission='view')
-    def attachment_view(self):
-        return attachment_view(self.context, self.request)
+        subpath = list(self.request.subpath)
+
+        if (len(subpath) > 0) and (subpath[-1] == "download"):
+            disposition = "attachment"
+            subpath.pop()
+        else:
+            disposition = "inline"
+
+        if len(subpath) == 1:
+            scale = subpath[0]
+            if scale in image_scales:
+                # /path/to/image/scale/thumb
+                width, height = image_scales[scale]
+            else:
+                # /path/to/image/scale/160x120
+                width, height = [int(v) for v in scale.split("x")]
+
+        elif len(subpath) == 2:
+            # /path/to/image/scale/160/120
+            width, height = [int(v) for v in subpath]
+
+        else:
+            # don't scale at all
+            width, height = (None, None)
+
+        if width and height:
+            image, format, size = scaleImage(self.context.data,
+                                             width=width,
+                                             height=height,
+                                             direction="thumb")
+        else:
+            image = self.context.data
+
+        res = Response(
+            headerlist=[('Content-Disposition', '%s;filename="%s"' % (disposition,
+                                                                      self.context.filename.encode('ascii', 'ignore'))),
+                        ('Content-Length', str(self.context.size)),
+                        ('Content-Type', str(self.context.mimetype)), ],
+            app_iter=image)
+
+        return res
 
 def includeme(config):
 

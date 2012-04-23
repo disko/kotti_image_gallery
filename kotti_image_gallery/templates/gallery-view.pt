@@ -13,7 +13,7 @@
         <div class="carousel-inner" style="background-color: black">
           <div class="item" tal:repeat="image images">
             <div class="carousel-image" style="text-align:center">
-              <img height="400" src="${request.resource_url(image)}image" />
+              <img src="${request.resource_url(image)}image/carousel" />
             </div>
             <div class="carousel-caption">
               <h4>${image.title}</h4>
@@ -21,8 +21,8 @@
               <p>
                 <small>
                   Type: ${image.mimetype},
-                  Size: ${image.size} bytes,
-                  Download: <a href="${request.resource_url(image)}image_download">${image.filename}</a>
+                  Size (original): ${image.size} bytes,
+                  Download (original): <a href="${request.resource_url(image)}image/download">${image.filename}</a>
                 </small>
               </p>
             </div>
