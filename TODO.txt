@@ -3,3 +3,4 @@ TODO
 
 - cleanup HTML/CSS
 - add support for remote galleries (e.g. flickr photosets)
+- add tests
