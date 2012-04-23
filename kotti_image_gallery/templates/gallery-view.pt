@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      metal:use-macro="api.macro('kotti:templates/view/master.pt')">
+
+  <article metal:fill-slot="content" class="document-view content">
+    <h1>${context.title}</h1>
+    <p class="description">
+      ${context.description}
+    </p>
+    <div class="body">
+      <div id="carousel" class="carousel slide">
+        <!-- Carousel items -->
+        <div class="carousel-inner" style="background-color: black">
+          <div class="item" tal:repeat="image images">
+            <div class="carousel-image" style="text-align:center">
+              <img height="400" src="${request.resource_url(image)}image" />
+            </div>
+            <div class="carousel-caption">
+              <h4>${image.title}</h4>
+              <p>${image.description}</p>
+              <p>
+                <small>
+                  Type: ${image.mimetype},
+                  Size: ${image.size} bytes,
+                  Download: <a href="${request.resource_url(image)}image_download">${image.filename}</a>
+                </small>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Carousel nav -->
+        <a class="carousel-control left" href="#carousel" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control right" href="#carousel" data-slide="next">&rsaquo;</a>
+      </div>
+    </div>
+    <script>
+      $(function () {
+        $('.carousel .item').eq(0).addClass('active');
+        $('.carousel').carousel();
+      });
+    </script>
+  </article>
+</html>
