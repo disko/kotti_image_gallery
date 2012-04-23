@@ -28,4 +28,5 @@ setup(name='kotti_image_gallery',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
       zip_safe=False,
-      install_requires=["Kotti>=0.6.0b1", ], )
+      install_requires=["Kotti>=0.6.0b1",
+                        "repoze.bitblt"], )
