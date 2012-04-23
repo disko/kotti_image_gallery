@@ -6,6 +6,7 @@ version = '0.1'
 here = os.path.abspath(os.path.dirname(__file__))
 try:
     README = open(os.path.join(here, 'README.rst')).read()
+    TODO = open(os.path.join(here, 'TODO.txt')).read()
     CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 except IOError:
     README = CHANGES = ''
@@ -13,7 +14,7 @@ except IOError:
 setup(name='kotti_image_gallery',
       version=version,
       description="Add an image gallery to your Kotti site",
-      long_description=README + '\n\n' + CHANGES,
+      long_description=README + '\n\n' + TODO + '\n\n' + CHANGES,
       classifiers=["Programming Language :: Python",
                    "Framework :: Pylons",
                    "Topic :: Internet :: WWW/HTTP",
