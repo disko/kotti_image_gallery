@@ -30,4 +30,4 @@ setup(name='kotti_image_gallery',
       include_package_data=True,
       zip_safe=False,
       install_requires=["Kotti>=0.6.0b1",
-                        "repoze.bitblt"], )
+                        "plone.scale"], )
