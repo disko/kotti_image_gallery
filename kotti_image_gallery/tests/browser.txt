@@ -213,7 +213,7 @@ Carousel, attachment
   >>> browser.headers["content-disposition"].lower()
   'attachment;filename="sendeschluss.jpg"'
 
-Invalid scale (should return original size)
+Invalid predefined scale (should return original size)
 
   >>> browser.open(testing.BASE_URL + '/my-gallery/image-1/image/invalid_scale')
   >>> browser.headers["content-type"]
@@ -223,9 +223,29 @@ Invalid scale (should return original size)
   >>> browser.headers["content-disposition"].lower()
   'inline;filename="sendeschluss.jpg"'
 
-Invalid scale (should return original size), attachment
+Invalid predefined scale (should return original size), attachment
 
   >>> browser.open(testing.BASE_URL + '/my-gallery/image-1/image/invalid_scale/download')
+  >>> browser.headers["content-type"]
+  'image/jpeg'
+  >>> browser.headers["content-length"]
+  '107341'
+  >>> browser.headers["content-disposition"].lower()
+  'attachment;filename="sendeschluss.jpg"'
+
+Invalid URL path segment scale (should return original size)
+
+  >>> browser.open(testing.BASE_URL + '/my-gallery/image-1/image/width/height')
+  >>> browser.headers["content-type"]
+  'image/jpeg'
+  >>> browser.headers["content-length"]
+  '107341'
+  >>> browser.headers["content-disposition"].lower()
+  'inline;filename="sendeschluss.jpg"'
+
+Invalid URL path segment scale (should return original size), attachment
+
+  >>> browser.open(testing.BASE_URL + '/my-gallery/image-1/image/width/height/download')
   >>> browser.headers["content-type"]
   'image/jpeg'
   >>> browser.headers["content-length"]
