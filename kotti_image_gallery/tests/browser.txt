@@ -30,12 +30,28 @@ Add a gallery
   >>> browser.url == testing.BASE_URL + '/my-gallery/'
   True
 
+Edit a gallery
+---------------
+
+  >>> browser.open(testing.BASE_URL + '/my-gallery/')
+  >>> browser.getLink("Edit").click()
+  >>> ctrl("Title").value = "Your Gallery"
+  >>> ctrl("save").click()
+  >>> "Your changes have been saved" in browser.contents
+  True
+  >>> "Your Gallery" in browser.contents
+  True
+  >>> browser.url == testing.BASE_URL + '/my-gallery/'
+  True
+
 Add images
 ----------
 
   >>> import os
   >>> from kotti_image_gallery import tests
   >>> image = open(os.sep.join((os.path.dirname(tests.__file__), "sendeschluss.jpg"))).read()
+
+Image 1
 
   >>> browser.open(testing.BASE_URL + '/my-gallery/')
   >>> browser.getLink("Add").click()
@@ -49,14 +65,32 @@ Add images
   >>> "Successfully added item" in browser.contents
   True
 
+Image 2
+
   >>> browser.open(testing.BASE_URL + '/my-gallery/')
   >>> browser.getLink("Add").click()
   >>> browser.getLink("Image").click()
 
   >>> ctrl("Title").value = "Image 2"
   >>> ctrl("Description").value = "An even more beautiful image"
+  >>> ctrl("File").add_file(image, 'image/jpeg', 'sendeschluss.jpg')
+
   >>> ctrl("save").click()
   >>> "Successfully added item" in browser.contents
+  True
+
+Image without file should show error message
+
+  >>> browser.open(testing.BASE_URL + '/my-gallery/')
+  >>> browser.getLink("Add").click()
+  >>> browser.getLink("Image").click()
+
+  >>> ctrl("Title").value = "Image 3"
+  >>> ctrl("Description").value = "An even more beautiful image"
+  >>> ctrl("save").click()
+  >>> "There was a problem with your submission" in browser.contents
+  True
+  >>> "Required" in browser.contents
   True
 
 View gallery and images
