@@ -129,11 +129,17 @@ class ImageView(BaseView):
                 width, height = image_scales[scale]
             else:
                 # /path/to/image/scale/160x120
-                width, height = [int(v) for v in scale.split("x")]
+                try:
+                    width, height = [int(v) for v in scale.split("x")]
+                except ValueError:
+                    width, height = (None, None)
 
         elif len(subpath) == 2:
             # /path/to/image/scale/160/120
-            width, height = [int(v) for v in subpath]
+            try:
+                width, height = [int(v) for v in subpath]
+            except ValueError:
+                width, height = (None, None)
 
         else:
             # don't scale at all
@@ -150,7 +156,7 @@ class ImageView(BaseView):
         res = Response(
             headerlist=[('Content-Disposition', '%s;filename="%s"' % (disposition,
                                                                       self.context.filename.encode('ascii', 'ignore'))),
-                        ('Content-Length', str(self.context.size)),
+                        ('Content-Length', str(len(image))),
                         ('Content-Type', str(self.context.mimetype)), ],
             app_iter=image)
 
