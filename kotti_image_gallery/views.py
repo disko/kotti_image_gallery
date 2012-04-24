@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import PIL
-from colander import null, SchemaNode
-from deform import FileData
-from deform.widget import FileUploadWidget
 from kotti import DBSession
 from kotti.util import _
-from kotti.views.edit import ContentSchema, generic_edit, generic_add
-from kotti.views.file import FileUploadTempStore
-from kotti.views.util import ensure_view_selector
+from kotti.views.edit import ContentSchema, make_generic_add, make_generic_edit
+from kotti.views.file import AddFileFormView, EditFileFormView
 from kotti_image_gallery import image_scales
 from kotti_image_gallery.resources import Gallery, Image
 from plone.scale.scale import scaleImage
@@ -31,28 +27,6 @@ class BaseView(object):
 
 class GalleryView(BaseView):
 
-    @view_config(name=Gallery.type_info.add_view,
-                 permission='add',
-                 renderer='kotti:templates/edit/node.pt')
-    def add(self):
-
-        return generic_add(self.context,
-                           self.request,
-                           GallerySchema(),
-                           Gallery,
-                           u'gallery')
-
-    @ensure_view_selector
-    @view_config(context=Gallery,
-                 name='edit',
-                 permission='edit',
-                 renderer='kotti:templates/edit/node.pt')
-    def edit(self):
-
-        return generic_edit(self.context,
-                            self.request,
-                            GallerySchema())
-
     @view_config(context=Gallery,
                  name='view',
                  permission='view',
@@ -66,40 +40,28 @@ class GalleryView(BaseView):
         return {"images": images}
 
 
+class EditImageFormView(EditFileFormView):
+
+    pass
+
+
+class AddImageFormView(AddFileFormView):
+
+    item_type = _(u"Image")
+
+    def add(self, **appstruct):
+
+        buf = appstruct['file']['fp'].read()
+
+        return Image(title=appstruct['title'],
+                     description=appstruct['description'],
+                     data=buf,
+                     filename=appstruct['file']['filename'],
+                     mimetype=appstruct['file']['mimetype'],
+                     size=len(buf), )
+
+
 class ImageView(BaseView):
-
-    def schema_factory(self):
-
-        tmpstore = FileUploadTempStore(self.request)
-
-        class ImageSchema(ContentSchema):
-            file = SchemaNode(FileData(),
-                              title=_(u'File'),
-                              missing=null,
-                              widget=FileUploadWidget(tmpstore), )
-
-        return ImageSchema()
-
-    @view_config(name=Image.type_info.add_view,
-                 permission='add',
-                 renderer='kotti:templates/edit/node.pt')
-    def add(self):
-        return generic_add(self.context,
-                           self.request,
-                           self.schema_factory(),
-                           Image,
-                           u'image')
-
-    @ensure_view_selector
-    @view_config(context=Image,
-                 name='edit',
-                 permission='edit',
-                 renderer='kotti:templates/edit/node.pt')
-    def edit(self):
-
-        return generic_edit(self.context,
-                            self.request,
-                            self.schema_factory())
 
     @view_config(context=Image,
                  name='view',
@@ -166,3 +128,23 @@ def includeme(config):
 
     config.add_static_view('static-kotti_image_gallery', 'kotti_image_gallery:static')
     config.scan("kotti_image_gallery")
+    config.add_view(AddImageFormView,
+                    name=Image.type_info.add_view,
+                    permission='add',
+                    renderer='kotti:templates/edit/node.pt',)
+    config.add_view(EditImageFormView,
+                    context=Image,
+                    name='edit',
+                    permission='edit',
+                    renderer='kotti:templates/edit/node.pt', )
+
+    config.add_view(make_generic_edit(GallerySchema()),
+                    context=Gallery,
+                    name='edit',
+                    permission='edit',
+                    renderer='kotti:templates/edit/node.pt', )
+
+    config.add_view(make_generic_add(GallerySchema(), Gallery),
+                    name=Gallery.type_info.add_view,
+                    permission='add',
+                    renderer='kotti:templates/edit/node.pt', )
