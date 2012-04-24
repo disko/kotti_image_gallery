@@ -1,1 +1,6 @@
+__pycache__
 Kotti.db
+*.pyc
+.coverage
+*.egg
+*.egg-info
