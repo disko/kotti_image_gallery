@@ -42,7 +42,6 @@ You may define image scale sizes in your ``.ini`` file by setting values for ``k
 ``thumb`` (160x120) and ``carousel`` (560x420) are always defined (because they are used in the default templates), but their values can be overwritten by setting ``kotti_image_gallery.scale_thumb`` and/or ``kotti_image_gallery.scale_carousel`` to different values in your .ini file.
 
 
-
 Work in progress
 ================
 
@@ -62,6 +61,13 @@ Note that all development is done on the ``develop`` branch and ``master`` is re
 Therefore make sure to always base your work on the current state of the ``develop`` branch.
 
 This follows the highly recommended `A successful Git branching model`_ pattern, which is implemented by the excellent `gitflow`_ git extension.
+
+Testing
+-------
+
+``kotti_image_gallery`` has 100% test coverage.
+Please make sure that you add tests for new features and that all tests pass before submitting pull requests.
+Running the test suite is as easy as running ``py.test`` from the source directory.
 
 
 .. _Bootstrap Carousel: http://twitter.github.com/bootstrap/javascript.html#carousel
