@@ -1,0 +1,13 @@
+CHANGES
+=======
+
+0.2
+---
+
+- Image inherits from File now.
+- Replaced repoze.bitblt based image scaling with much more powerful plone.scale based version.
+
+0.1
+---
+
+- Initial release.
