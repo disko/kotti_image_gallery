@@ -4,12 +4,24 @@ import os
 version = '0.2'
 
 here = os.path.abspath(os.path.dirname(__file__))
+
 try:
     README = open(os.path.join(here, 'README.rst')).read()
+except IOError:
+    README = ""
+try:
     TODO = open(os.path.join(here, 'TODO.txt')).read()
+except IOError:
+    TODO = ""
+try:
     CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 except IOError:
-    README = CHANGES = ''
+    CHANGES = ""
+
+tests_require = ["pytest",
+                 "WebTest",
+                 "wsgi_intercept",
+                 "zope.testbrowser", ]
 
 setup(name='kotti_image_gallery',
       version=version,
@@ -30,4 +42,9 @@ setup(name='kotti_image_gallery',
       include_package_data=True,
       zip_safe=False,
       install_requires=["Kotti>=0.6.0b1",
-                        "plone.scale"], )
+                        "plone.scale"] + tests_require,
+      tests_require=tests_require,
+      extras_require = {
+          'testing': tests_require,
+          },
+)
