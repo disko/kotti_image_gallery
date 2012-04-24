@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+0.3
+---
+
+- don't duplicate code/functionality that already exists in Kotti
+- 100% test coverage
+
 0.2
 ---
 
