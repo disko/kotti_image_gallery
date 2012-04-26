@@ -4,3 +4,5 @@ Kotti.db
 .coverage
 *.egg
 *.egg-info
+
+dist/
