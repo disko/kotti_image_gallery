@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+0.3.2
+-----
+
+- added missing dependency (PIL)
+
 0.3.1
 -----
 
