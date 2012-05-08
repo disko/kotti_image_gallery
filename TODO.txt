@@ -1,5 +1,6 @@
 TODO
 ====
 
+- use kotti.util.extract_from_settings for configuring image sizes
 - cleanup HTML/CSS
 - add support for remote galleries (e.g. flickr photosets)

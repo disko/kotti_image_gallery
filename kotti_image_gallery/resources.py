@@ -4,6 +4,7 @@ from kotti.resources import Content, File
 from kotti.util import _
 from sqlalchemy import Column, ForeignKey, Integer
 
+
 class Gallery(Content):
 
     id = Column(Integer, ForeignKey('contents.id'), primary_key=True)
@@ -21,4 +22,4 @@ class Image(File):
     type_info = File.type_info.copy(name=u'Image',
                                     title=_(u'Image'),
                                     add_view=u'add_image',
-                                    addable_to=[u'Gallery'], )
+                                    addable_to=[u'Gallery', u'Document', u'Video'], )
