@@ -9,6 +9,12 @@ It uses `Bootstrap Carousel`_ for the gallery view.
 `Find out more about Kotti`_
 
 
+Compatibility
+=============
+
+As of Kotti 0.7 the image type from kotti_image_gallery has been moved to the Kotti core. Please use the kotti_gallery package, which supersedes this package with Kotti versions >= 0.7.
+
+
 Setup
 =====
 
